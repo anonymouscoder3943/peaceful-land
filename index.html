@@ -111,15 +111,6 @@
     font-size: clamp(16px, 3vw, 26px);
     text-shadow: 1px 1px 0 #fff;
   }
-  .timer {
-    position: relative;
-    z-index: 5;
-    margin-top: 20px;
-    color: #6b8e23;
-    font-size: 18px;
-    opacity: .7;
-  }
-
   /* Floating hearts / flowers */
   .float {
     position: absolute;
@@ -207,7 +198,6 @@
 
     <h1 class="greeting">Welcome to Sunshine Land! 🌈</h1>
     <p class="subtitle">Everything here is happy and cozy 💖🌸🦋</p>
-    <p class="timer" id="timer">Enjoy the good vibes...</p>
   </div>
 
   <!-- Jumpscare -->
@@ -231,15 +221,6 @@
     s.style.fontSize = (20 + Math.random() * 24) + 'px';
     happy.appendChild(s);
   }
-
-  // Countdown text (harmless — keeps them relaxed 😇)
-  let left = 10;
-  const timerEl = document.getElementById('timer');
-  const tick = setInterval(() => {
-    left--;
-    if (left > 0) timerEl.textContent = 'Enjoy the good vibes... ' + left;
-    else clearInterval(tick);
-  }, 1000);
 
   // Play a scream via Web Audio (no external files needed)
   function scream() {
