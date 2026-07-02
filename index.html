@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Sunshine Land 🌈</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; overflow: hidden; font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif; }
+
+  /* ---------- HAPPY SCENE ---------- */
+  #happy {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #7ecbff 0%, #aee6ff 55%, #b6f0a8 55%, #8fe07a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Sun */
+  .sun {
+    position: absolute;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, #fff36b 40%, #ffd93b 70%, #ffcb05 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 60px 20px rgba(255, 221, 59, 0.7);
+    animation: spin 20s linear infinite, bob 4s ease-in-out infinite;
+  }
+  .sun::before {
+    content: "";
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 10deg, rgba(255,221,59,.5) 10deg 20deg);
+    z-index: -1;
+    animation: spin 40s linear infinite;
+  }
+  .sun-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+  }
+
+  /* Rainbow */
+  .rainbow {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    border-radius: 300px 300px 0 0;
+    border: 22px solid red;
+    border-bottom: none;
+    box-shadow:
+      0 0 0 22px #ff9a00,
+      0 0 0 44px #ffe600,
+      0 0 0 66px #46e05a,
+      0 0 0 88px #3aa0ff,
+      0 0 0 110px #a44bff;
+    opacity: .85;
+    animation: sway 8s ease-in-out infinite;
+  }
+
+  /* Clouds */
+  .cloud {
+    position: absolute;
+    background: #fff;
+    border-radius: 50px;
+    opacity: .9;
+    filter: drop-shadow(0 8px 6px rgba(0,0,0,.08));
+  }
+  .cloud::before, .cloud::after {
+    content: "";
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .cloud1 { width: 120px; height: 40px; top: 20%; left: -140px; animation: drift 26s linear infinite; }
+  .cloud1::before { width: 55px; height: 55px; top: -22px; left: 18px; }
+  .cloud1::after  { width: 70px; height: 70px; top: -34px; left: 48px; }
+  .cloud2 { width: 90px; height: 30px; top: 40%; left: -120px; animation: drift 34s linear infinite 4s; transform: scale(.8); }
+  .cloud2::before { width: 40px; height: 40px; top: -16px; left: 12px; }
+  .cloud2::after  { width: 55px; height: 55px; top: -28px; left: 36px; }
+
+  .greeting {
+    position: relative;
+    z-index: 5;
+    margin-top: 34%;
+    color: #ff4fa3;
+    font-size: clamp(28px, 6vw, 60px);
+    text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,.1);
+    animation: bounce 1.6s ease-in-out infinite;
+  }
+  .subtitle {
+    position: relative;
+    z-index: 5;
+    margin-top: 12px;
+    color: #4a6fff;
+    font-size: clamp(16px, 3vw, 26px);
+    text-shadow: 1px 1px 0 #fff;
+  }
+  .timer {
+    position: relative;
+    z-index: 5;
+    margin-top: 20px;
+    color: #6b8e23;
+    font-size: 18px;
+    opacity: .7;
+  }
+
+  /* Floating hearts / flowers */
+  .float {
+    position: absolute;
+    bottom: -40px;
+    font-size: 28px;
+    animation: rise linear infinite;
+    z-index: 4;
+    user-select: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes bob { 0%,100%{ transform: translateX(-50%) translateY(0);} 50%{ transform: translateX(-50%) translateY(12px);} }
+  @keyframes sway { 0%,100%{ transform: translateX(-50%) rotate(-2deg);} 50%{ transform: translateX(-50%) rotate(2deg);} }
+  @keyframes drift { from { left: -160px; } to { left: 110%; } }
+  @keyframes bounce { 0%,100%{ transform: translateY(0) rotate(-2deg);} 50%{ transform: translateY(-16px) rotate(2deg);} }
+  @keyframes rise {
+    0%   { transform: translateY(0) rotate(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ---------- JUMPSCARE ---------- */
+  #scare {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    overflow: hidden;
+  }
+  #scare.show { display: flex; animation: violentShake 0.05s infinite; }
+
+  .scare-face {
+    width: min(96vw, 96vh);
+    height: min(96vw, 96vh);
+    object-fit: cover;
+    line-height: 1;
+    filter: drop-shadow(0 0 40px red) contrast(1.4) saturate(1.6);
+    animation: zoomPulse 0.18s infinite alternate;
+  }
+  .scare-text {
+    position: absolute;
+    bottom: 8%;
+    width: 100%;
+    text-align: center;
+    color: #ff0000;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: clamp(40px, 12vw, 140px);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px #ff0000, 3px 3px 0 #000;
+    animation: flicker 0.1s infinite;
+  }
+  .scare-flash {
+    position: absolute;
+    inset: 0;
+    background: red;
+    mix-blend-mode: multiply;
+    animation: redFlash 0.12s infinite;
+    pointer-events: none;
+  }
+
+  @keyframes violentShake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(-14px, 10px) rotate(-1deg); }
+    50%  { transform: translate(12px, -12px) rotate(1deg); }
+    75%  { transform: translate(-10px, -8px) rotate(-1deg); }
+    100% { transform: translate(10px, 12px) rotate(1deg); }
+  }
+  @keyframes zoomPulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+  @keyframes flicker { 0%,100%{ opacity: 1;} 50%{ opacity: .3;} }
+  @keyframes redFlash { 0%,100%{ opacity: 0;} 50%{ opacity: .55;} }
+</style>
+</head>
+<body>
+
+  <!-- Happy scene -->
+  <div id="happy">
+    <div class="rainbow"></div>
+    <div class="sun"><div class="sun-face">😊</div></div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <h1 class="greeting">Welcome to Sunshine Land! 🌈</h1>
+    <p class="subtitle">Everything here is happy and cozy 💖🌸🦋</p>
+    <p class="timer" id="timer">Enjoy the good vibes...</p>
+  </div>
+
+  <!-- Jumpscare -->
+  <div id="scare">
+    <div class="scare-flash"></div>
+    <img class="scare-face" src="sarap.jpg" alt="">
+    <div class="scare-text">BOO!!!</div>
+  </div>
+
+<script>
+  // Sprinkle floating hearts & flowers
+  const emojis = ['💖','🌸','🦋','⭐','🌼','🌈','🍀'];
+  const happy = document.getElementById('happy');
+  for (let i = 0; i < 18; i++) {
+    const s = document.createElement('div');
+    s.className = 'float';
+    s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDuration = (6 + Math.random() * 8) + 's';
+    s.style.animationDelay = (Math.random() * 8) + 's';
+    s.style.fontSize = (20 + Math.random() * 24) + 'px';
+    happy.appendChild(s);
+  }
+
+  // Countdown text (harmless — keeps them relaxed 😇)
+  let left = 10;
+  const timerEl = document.getElementById('timer');
+  const tick = setInterval(() => {
+    left--;
+    if (left > 0) timerEl.textContent = 'Enjoy the good vibes... ' + left;
+    else clearInterval(tick);
+  }, 1000);
+
+  // Play a scream via Web Audio (no external files needed)
+  function scream() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = ctx.currentTime;
+      // Harsh dissonant burst
+      [220, 233, 466, 700].forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = i % 2 ? 'sawtooth' : 'square';
+        osc.frequency.setValueAtTime(f, now);
+        osc.frequency.exponentialRampToValueAtTime(f * 2.5, now + 1.2);
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.3, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 1.5);
+      });
+      // Noise layer
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * 1.4, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+      const noise = ctx.createBufferSource();
+      const ng = ctx.createGain();
+      ng.gain.setValueAtTime(0.25, now);
+      ng.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+      noise.buffer = buffer;
+      noise.connect(ng).connect(ctx.destination);
+      noise.start(now);
+    } catch (e) { /* audio not allowed, visuals still fire */ }
+  }
+
+  // THE JUMPSCARE
+  setTimeout(() => {
+    document.getElementById('happy').style.display = 'none';
+    const scare = document.getElementById('scare');
+    scare.classList.add('show');
+    scream();
+    // Try to vibrate on mobile
+    if (navigator.vibrate) navigator.vibrate([200, 80, 200, 80, 400]);
+  }, 10000);
+</script>
+</body>
+</html>
